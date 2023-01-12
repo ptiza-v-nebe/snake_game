@@ -22,6 +22,8 @@ if __name__ == '__main__':
 
     snake_fields = snake.render()
 
+    grid = Grid()
+    grid_fields = grid.render()
 
     renderer = Renderer()
     renderer.add(snake_fields)
