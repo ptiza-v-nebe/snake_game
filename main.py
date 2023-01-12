@@ -4,6 +4,7 @@ from grid import Grid
 from snake import Snake
 from point import Point
 from direction import Direction
+from renderer import Renderer
 
 if __name__ == '__main__':
     snake = Snake(origin=Point(6, 6))
@@ -19,9 +20,10 @@ if __name__ == '__main__':
     snake.update()
     snake.update()
 
-    fields = snake.render()
+    snake_fields = snake.render()
 
-    grid = Grid()
-    grid.add(fields)
-    grid.draw()
-    pass
+
+    renderer = Renderer()
+    renderer.add(snake_fields)
+    renderer.add(grid_fields)
+    renderer.draw()

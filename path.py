@@ -1,7 +1,6 @@
 from point import Point
 from collections import deque
 from direction import Direction
-from copy import deepcopy
 
 
 class Path:
@@ -46,13 +45,6 @@ class Path:
             new_head = actual_head + Point(-1, 0)
 
         return new_head
-
-    # @staticmethod
-    # def correct_zero(waypoints):
-    #     head = deepcopy(waypoints[0])
-    #     for idx in range(0, len(waypoints)):
-    #         waypoints[idx].x += -head.x
-    #         waypoints[idx].y += -head.y
 
     def update(self):
         # taking last point of path and add him to the beginning of path in the direction of heading

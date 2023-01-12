@@ -1,5 +1,3 @@
-import sys
-
 
 class Grid:
     def __init__(self):
@@ -16,14 +14,10 @@ class Grid:
                      ["#", " ", " ", " ", " ", " ", " ", " ", " ", " ", " ", "#"],
                      ["#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#", "#"]]
 
-    def add(self, fields):
-        for field in fields:
-            x = 0 + field.x
-            y = 0 + field.y
-            self.grid[y][x] = field.t.value
+    def render(self):
+        fields = []
+        return fields
 
-    def draw(self):
-        for line in self.grid:
-            for field in line:
-                sys.stdout.write(field + "  ")
-            print()
+
+
+
