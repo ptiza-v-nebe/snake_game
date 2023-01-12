@@ -47,12 +47,12 @@ class Path:
 
         return new_head
 
-    @staticmethod
-    def correct_zero(waypoints):
-        head = deepcopy(waypoints[0])
-        for idx in range(0, len(waypoints)):
-            waypoints[idx].x += -head.x
-            waypoints[idx].y += -head.y
+    # @staticmethod
+    # def correct_zero(waypoints):
+    #     head = deepcopy(waypoints[0])
+    #     for idx in range(0, len(waypoints)):
+    #         waypoints[idx].x += -head.x
+    #         waypoints[idx].y += -head.y
 
     def update(self):
         # taking last point of path and add him to the beginning of path in the direction of heading
@@ -60,7 +60,6 @@ class Path:
         actual_head = self.peek_head()
         new_head = self.calc_head(actual_head, self.direction)
         self.append_head(new_head)
-        #self.correct_zero(self.waypoints)
 
     def get_waypoints(self):
         return self.waypoints

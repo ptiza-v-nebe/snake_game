@@ -1,7 +1,6 @@
 from path import Path
 from grid import Grid
-from field import Field
-from symbol import Symbol
+
 from snake import Snake
 from point import Point
 from direction import Direction
@@ -20,14 +19,7 @@ if __name__ == '__main__':
     snake.update()
     snake.update()
 
-    waypoints = snake.get_waypoints()
-
-    fields = []
-    for waypoint in waypoints:
-        print(waypoint.x, waypoint.y)
-        fields.append(Field(waypoint.x, waypoint.y, Symbol.PATH))
-
-    print()
+    fields = snake.render()
 
     grid = Grid()
     grid.add(fields)

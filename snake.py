@@ -1,22 +1,18 @@
 from enum import Enum
 from point import Point
 from path import Path
+from field import Field
+from symbol import Symbol
 
 
-class SnakePartType(Enum):
+class BodyType(Enum):
     HEAD = 0
     TAIL = 1
-
-
-class SnakePart:
-    def __init__(self):
-        self.type = SnakePartType.HEAD
 
 
 class Snake:
     def __init__(self, origin):
         self.origin = origin
-        # self.parts = list()  # SnakePart
         self.path = Path()
 
         # initial snake
@@ -26,11 +22,29 @@ class Snake:
         self.path.append_tail(Point(1, 2))
         self.path.append_tail(Point(2, 2))
 
+        self.body = [BodyType.HEAD, BodyType.TAIL, BodyType.TAIL, BodyType.TAIL, BodyType.TAIL, BodyType.TAIL]
+        self.length = len(self.body)
+
     def get_waypoints(self):
         waypoints = []
         for waypoint in self.path.get_waypoints():
             waypoints.append(self.origin + waypoint)
         return waypoints
+
+    @staticmethod
+    def body2symbol(body):
+        symbol = 0
+        if body == BodyType.TAIL:
+            symbol = Symbol.TAIL
+        elif body == BodyType.HEAD:
+            symbol = Symbol.HEAD
+        return symbol
+
+    def render(self):
+        fields = []
+        for idx, waypoint in enumerate(self.get_waypoints()):
+            fields.append(Field(waypoint.x, waypoint.y, Snake.body2symbol(self.body[idx])))
+        return fields
 
     def update(self):
         self.path.update()
