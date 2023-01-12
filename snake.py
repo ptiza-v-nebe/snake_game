@@ -46,6 +46,9 @@ class Snake:
             fields.append(Field(waypoint.x, waypoint.y, Snake.body2symbol(self.body[idx])))
         return fields
 
+    def get_head(self):
+        return self.origin + self.path.peek_head()
+
     def update(self):
         self.path.update()
 

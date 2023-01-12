@@ -23,9 +23,11 @@ class Grid:
     def check_collision(point):
         if game_map[point.y][point.x] == "#":
             return True
+        else:
+            return False
 
     @staticmethod
-    def render(self):
+    def render():
         fields = []
 
         for row_idx, row_value in enumerate(game_map):
