@@ -32,10 +32,12 @@ class GameLoop:
         # move snake
         self.snake.update()
 
-        # check if we have hit a wall
+        # check if we have hit a wall or our self
         if self.grid.check_collision(self.snake.get_head()):
             self.stop()
 
+        if self.snake.check_self_collision():
+            self.stop()
 
         # draw
         snake_fields = self.snake.render()

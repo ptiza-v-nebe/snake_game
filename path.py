@@ -1,7 +1,7 @@
 from point import Point
 from collections import deque
 from direction import Direction
-
+import itertools
 
 class Path:
     def __init__(self):
@@ -22,6 +22,9 @@ class Path:
 
     def peek_head(self):
         return self.waypoints[0]
+
+    def peek_body(self):
+        return list(itertools.islice(self.waypoints, 1, len(self.waypoints)))
 
     def peek_tail(self):
         return self.waypoints[-1]
@@ -64,6 +67,13 @@ class Path:
         actual_head = self.peek_head()
         new_head = self.calc_head(actual_head, self.direction)
         self.append_head(new_head)
+
+    def check_self_collision(self):
+        # has head and body same point?
+        for body in self.peek_body():
+            if self.peek_head() == body:
+                return True
+        return False
 
     def get_waypoints(self):
         return self.waypoints

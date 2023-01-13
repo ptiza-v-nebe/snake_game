@@ -55,5 +55,8 @@ class Snake:
     def set_direction(self, direction):
         self.path.set_direction(direction)
 
+    def check_self_collision(self):
+        return self.path.check_self_collision()
+
 
 
