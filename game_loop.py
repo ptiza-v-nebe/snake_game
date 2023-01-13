@@ -19,14 +19,29 @@ class GameLoop:
 
         self.user = User(self.up, self.down, self.right, self.left)
         self.user.start()
+        self._is_running = True
+
+    def stop(self):
+        self._is_running = False
+
+    def is_running(self):
+        return self._is_running
 
     def update(self):
-        self.snake.update()
-        print(self.grid.check_collision(self.snake.get_head()))
+        # check if we have hit a wall
+        if self.grid.check_collision(self.snake.get_head()):
+            self.stop()
 
+        # move snake
+        self.snake.update()
+
+        # check if we have hit a wall
+        if self.grid.check_collision(self.snake.get_head()):
+            self.stop()
+
+        # draw
         snake_fields = self.snake.render()
         grid_fields = self.grid.render()
-
         self.renderer.clear()
         self.renderer.add(snake_fields)
         self.renderer.add(grid_fields)
