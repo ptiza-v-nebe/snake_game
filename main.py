@@ -1,8 +1,8 @@
-from game_loop import GameLoop
+from loop import Loop
 from time import sleep
 
 if __name__ == '__main__':
-    loop = GameLoop()
+    loop = Loop()
 
     while loop.is_running():
         loop.update()

@@ -4,12 +4,13 @@ from point import Point
 from direction import Direction
 from renderer import Renderer
 from user import User
-from time import sleep
+from food import Food
 
 
-class GameLoop:
+class Loop:
     def __init__(self):
         self.snake = Snake(origin=Point(6, 6))
+        self.food = Food()
         self.grid = Grid()
         self.renderer = Renderer()
 
@@ -39,11 +40,17 @@ class GameLoop:
         if self.snake.check_self_collision():
             self.stop()
 
+        if self.food.check_collision(self.snake.get_head()):
+            self.snake.grow()
+            self.food.remove(self.snake.get_head())
+
         # draw
         snake_fields = self.snake.render()
         grid_fields = self.grid.render()
+        food_fields = self.food.render()
+
         self.renderer.clear()
         self.renderer.add(snake_fields)
         self.renderer.add(grid_fields)
+        self.renderer.add(food_fields)
         self.renderer.draw()
-

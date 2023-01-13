@@ -58,5 +58,8 @@ class Snake:
     def check_self_collision(self):
         return self.path.check_self_collision()
 
+    def grow(self):
+        pass
+
 
 
