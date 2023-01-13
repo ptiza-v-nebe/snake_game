@@ -5,6 +5,7 @@ from direction import Direction
 from renderer import Renderer
 from user import User
 from food import Food
+from generator import Generator
 
 
 class Loop:
@@ -12,6 +13,7 @@ class Loop:
         self.snake = Snake(origin=Point(6, 6))
         self.food = Food()
         self.grid = Grid()
+        self.gen = Generator(self.food, self.grid.get_move_space())
         self.renderer = Renderer()
 
         self.up = lambda: self.snake.set_direction(Direction.SOUTH)
@@ -30,6 +32,8 @@ class Loop:
         return self._is_running
 
     def update(self):
+        self.gen.update()
+
         # move snake
         self.snake.update()
 
@@ -45,12 +49,12 @@ class Loop:
             self.food.remove(self.snake.get_head())
 
         # draw
-        snake_fields = self.snake.render()
         grid_fields = self.grid.render()
         food_fields = self.food.render()
+        snake_fields = self.snake.render()
 
         self.renderer.clear()
-        self.renderer.add(snake_fields)
         self.renderer.add(grid_fields)
         self.renderer.add(food_fields)
+        self.renderer.add(snake_fields)
         self.renderer.draw()
