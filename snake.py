@@ -19,10 +19,8 @@ class Snake:
         self.path.append_tail(Point(0, 0))
         self.path.append_tail(Point(1, 0))
         self.path.append_tail(Point(1, 1))
-        self.path.append_tail(Point(1, 2))
-        self.path.append_tail(Point(2, 2))
 
-        self.body = [BodyType.HEAD, BodyType.TAIL, BodyType.TAIL, BodyType.TAIL, BodyType.TAIL, BodyType.TAIL]
+        self.body = [BodyType.HEAD, BodyType.TAIL, BodyType.TAIL]
         self.length = len(self.body)
 
     def get_waypoints(self):
@@ -62,7 +60,9 @@ class Snake:
         return self.path.check_self_collision()
 
     def grow(self):
-        pass
+        last_tail = self.path.get_last_tail()
+        self.path.append_tail(last_tail)
+        self.body.append(BodyType.TAIL)
 
 
 

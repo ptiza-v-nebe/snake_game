@@ -7,11 +7,13 @@ class Path:
     def __init__(self):
         self.waypoints = deque()
         self.direction = Direction.NORTH
+        self.last_tail = 0
 
     def append_head(self, point):
         return self.waypoints.appendleft(point)
 
     def append_tail(self, point):
+        self.last_tail = point  # TODO: overlapping tails could happen, CHECK!
         return self.waypoints.append(point)
 
     def pop_head(self):
@@ -63,7 +65,7 @@ class Path:
 
     def update(self):
         # taking last point of path and add him to the beginning of path in the direction of heading
-        self.pop_tail()
+        self.last_tail = self.pop_tail()
         actual_head = self.peek_head()
         new_head = self.calc_head(actual_head, self.direction)
         self.append_head(new_head)
@@ -82,3 +84,6 @@ class Path:
 
     def get_waypoints(self):
         return self.waypoints
+
+    def get_last_tail(self):
+        return self.last_tail
