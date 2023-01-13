@@ -12,9 +12,13 @@ class Loop:
     def __init__(self):
         self.snake = Snake(origin=Point(6, 6))
         self.food = Food()
-        self.grid = Grid()
+
+        self.width = 20
+        self.height = 20
+
+        self.renderer = Renderer(width=20, height=20)
+        self.grid = Grid(*self.renderer.get_canvas_dimensions())
         self.gen = Generator(self.food, self.grid.get_move_space())
-        self.renderer = Renderer()
 
         self.up = lambda: self.snake.set_direction(Direction.SOUTH)
         self.down = lambda: self.snake.set_direction(Direction.NORTH)
