@@ -49,6 +49,9 @@ class Snake:
     def get_head(self):
         return self.origin + self.path.peek_head()
 
+    def get_phantom_head(self):
+        return self.origin + self.path.peek_phantom_head()
+
     def update(self):
         self.path.update()
 

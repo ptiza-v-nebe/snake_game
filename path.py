@@ -68,6 +68,11 @@ class Path:
         new_head = self.calc_head(actual_head, self.direction)
         self.append_head(new_head)
 
+    def peek_phantom_head(self):
+        actual_head = self.peek_head()
+        phantom_head = self.calc_head(actual_head, self.direction)
+        return phantom_head
+
     def check_self_collision(self):
         # has head and body same point?
         for body in self.peek_body():

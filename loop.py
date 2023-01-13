@@ -34,12 +34,16 @@ class Loop:
     def update(self):
         self.gen.update()
 
-        # move snake
-        self.snake.update()
+        # check for upcoming collision
+        phantom_head = self.snake.get_phantom_head()
+        is_grid_collision = self.grid.check_collision(phantom_head)
+        is_self_collision = self.snake.check_self_collision()
 
-        # check if we have hit a wall or our self
-        if self.grid.check_collision(self.snake.get_head()):
+        if is_grid_collision or is_self_collision:
             self.stop()
+            return
+        else:
+            self.snake.update()
 
         if self.snake.check_self_collision():
             self.stop()
