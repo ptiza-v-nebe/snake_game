@@ -3,6 +3,7 @@ from collections import deque
 from direction import Direction
 import itertools
 
+
 class Path:
     def __init__(self):
         self.waypoints = deque()
@@ -78,7 +79,7 @@ class Path:
     def check_self_collision(self):
         # has head and body same point?
         for body in self.peek_body():
-            if self.peek_head() == body:
+            if self.peek_phantom_head() == body:
                 return True
         return False
 
