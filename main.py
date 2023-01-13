@@ -7,4 +7,5 @@ if __name__ == '__main__':
     while loop.is_running():
         loop.update()
         sleep(0.5)
+
     print("end of game!")

@@ -4,6 +4,7 @@ from point import Point
 from direction import Direction
 from renderer import Renderer
 from user import User
+from time import sleep
 
 
 class GameLoop:
@@ -28,16 +29,13 @@ class GameLoop:
         return self._is_running
 
     def update(self):
-        # check if we have hit a wall
-        if self.grid.check_collision(self.snake.get_head()):
-            self.stop()
-
         # move snake
         self.snake.update()
 
         # check if we have hit a wall
         if self.grid.check_collision(self.snake.get_head()):
             self.stop()
+
 
         # draw
         snake_fields = self.snake.render()

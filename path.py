@@ -26,9 +26,21 @@ class Path:
     def peek_tail(self):
         return self.waypoints[-1]
 
+    def is_opposite(self, direction):
+        if self.direction == Direction.NORTH and direction == Direction.SOUTH:
+            return True
+        elif self.direction == Direction.SOUTH and direction == Direction.NORTH:
+            return True
+        elif self.direction == Direction.WEST and direction == Direction.EAST:
+            return True
+        elif self.direction == Direction.EAST and direction == Direction.WEST:
+            return True
+        return False
+
     def set_direction(self, direction):
-        # TODO: checking if direction is allowed
-        self.direction = direction
+        # check if we are not trying to reverse into our self
+        if not self.is_opposite(direction):
+            self.direction = direction
 
     @staticmethod
     def calc_head(actual_head, direction):
