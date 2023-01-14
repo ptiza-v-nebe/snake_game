@@ -1,6 +1,6 @@
-from point import Point
+from .point import Point
 from collections import deque
-from direction import Direction
+from .direction import Direction
 import itertools
 
 

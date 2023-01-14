@@ -1,8 +1,8 @@
 from enum import Enum
-from point import Point
-from path import Path
-from field import Field
-from symbol import Symbol
+from .point import Point
+from .path import Path
+from .field import Field
+from .symbol import Symbol
 
 
 class BodyType(Enum):

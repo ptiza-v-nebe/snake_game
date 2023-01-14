@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-from symbol import Symbol
+from .symbol import Symbol
 
 
 @dataclass

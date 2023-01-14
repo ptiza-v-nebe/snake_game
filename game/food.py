@@ -1,6 +1,6 @@
-from point import Point
-from field import Field
-from symbol import Symbol
+from .point import Point
+from .field import Field
+from .symbol import Symbol
 
 
 class Food:

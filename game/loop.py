@@ -1,11 +1,11 @@
-from grid import Grid
-from snake import Snake
-from point import Point
-from direction import Direction
-from renderer import Renderer
-from user import User
-from food import Food
-from generator import Generator
+from .grid import Grid
+from .snake import Snake
+from .point import Point
+from .direction import Direction
+from .renderer import Renderer
+from .user import User
+from .food import Food
+from .generator import Generator
 
 
 class Loop:
@@ -13,10 +13,10 @@ class Loop:
         self.snake = Snake(origin=Point(6, 6))
         self.food = Food()
 
-        self.width = 20
-        self.height = 20
+        self.width = 12
+        self.height = 12
 
-        self.renderer = Renderer(width=20, height=20)
+        self.renderer = Renderer(self.width, self.height)
         self.grid = Grid(*self.renderer.get_canvas_dimensions())
         self.gen = Generator(self.food, self.grid.get_move_space())
 
@@ -36,7 +36,7 @@ class Loop:
         return self._is_running
 
     def update(self):
-        self.gen.update()
+        self.gen.random_add()
 
         # check for upcoming collision
         phantom_head = self.snake.get_phantom_head()
