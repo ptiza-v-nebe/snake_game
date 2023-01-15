@@ -12,7 +12,6 @@ class FoodPositionMsg(Msg):
         return json.dumps(tmp_dict)
 
     def deserialize(self, buf) -> None:
-        print(buf)
         tmp_dict = json.loads(buf)
         self.x = tmp_dict["x"]
         self.y = tmp_dict["y"]

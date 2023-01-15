@@ -3,16 +3,18 @@ from .gateway import OutgoingGateway, IncomingGateway
 
 
 class Dispatcher(IncomingGateway):
-    def __init__(self, outgoing_gateway: OutgoingGateway):
-        self.outgoing_gateway = outgoing_gateway
+    def __init__(self, transport):
+        transport.set_incoming_gateway(self)
+        self.outgoing_gateway = transport
         self.callbacks = {}
 
     def from_transport(self, data):
         tmp_dict = json.loads(data)
         topic = tmp_dict["topic"]
         msg_type = tmp_dict["msg_type"]
-        msg_json = json.loads(tmp_dict["msg_payload"])
-        self.callbacks[topic](msg_type, msg_json)
+        msg_json = tmp_dict["msg_payload"]
+        if topic in self.callbacks.keys():
+            self.callbacks[topic](msg_type, msg_json)
 
     def publish(self, msg, topic):
         msg_type = type(msg).__name__
