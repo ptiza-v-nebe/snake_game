@@ -58,7 +58,7 @@ class Game:
             self.snake.grow()
             self.food.remove(self.snake.get_head())
 
-        # render
+    def render(self):
         grid_fields = self.grid.render()
         food_fields = self.food.render()
         snake_fields = self.snake.render()

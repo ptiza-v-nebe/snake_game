@@ -32,7 +32,7 @@ if __name__ == '__main__':
     # fp = FoodPositionMsg(3, 5)
     # dispatcher.publish(msg=fp, topic="/food")
 
-    renderer = Renderer(width=12, height=12)
+    renderer = Renderer(width=20, height=20)
 
     game = Game(renderer.get_canvas_dimensions())
     user = User()
@@ -46,10 +46,10 @@ if __name__ == '__main__':
     user.start()
 
     while game.is_running():
-        fields = game.update()
+        game.update()
         renderer.clear()
-        for f in fields:
-            renderer.add(f)
+        for fields in game.render():
+            renderer.add(fields)
         renderer.draw()
         sleep(0.5)
 
