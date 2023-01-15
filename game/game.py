@@ -2,24 +2,18 @@ from .grid import Grid
 from .snake import Snake
 from .point import Point
 from .direction import Direction
-from .renderer import Renderer
-from .user import User
+
 from .food import Food
 from .generator import Generator
 from .control import Control
 
 
 class Game:
-    def __init__(self):
-        self.width = 12
-        self.height = 12
-
-        self.renderer = Renderer(self.width, self.height)
-
+    def __init__(self, dimensions):
         self.snake = Snake(origin=Point(6, 6))
         self.food = Food()
 
-        self.grid = Grid(*self.renderer.get_canvas_dimensions())
+        self.grid = Grid(*dimensions)
         self.gen = Generator(self.food, self.grid.get_move_space())
 
         self._is_running = True
@@ -64,13 +58,9 @@ class Game:
             self.snake.grow()
             self.food.remove(self.snake.get_head())
 
-        # draw
+        # render
         grid_fields = self.grid.render()
         food_fields = self.food.render()
         snake_fields = self.snake.render()
 
-        self.renderer.clear()
-        self.renderer.add(grid_fields)
-        self.renderer.add(food_fields)
-        self.renderer.add(snake_fields)
-        self.renderer.draw()
+        return grid_fields, food_fields, snake_fields

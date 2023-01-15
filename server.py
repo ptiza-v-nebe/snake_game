@@ -1,12 +1,9 @@
-from comm.food_position_msg import FoodPositionMsg
-
-from comm.dispatcher import Dispatcher
-from comm.transport import TransportServer
-
 from comm.gateway import OutgoingGateway, IncomingGateway
 from game.game import Game
 from time import sleep
-from game.user import User
+
+from device.renderer import Renderer
+from device.user import User
 from game.control import Control
 
 
@@ -35,7 +32,9 @@ if __name__ == '__main__':
     # fp = FoodPositionMsg(3, 5)
     # dispatcher.publish(msg=fp, topic="/food")
 
-    game = Game()
+    renderer = Renderer(width=12, height=12)
+
+    game = Game(renderer.get_canvas_dimensions())
     user = User()
 
     up = lambda: game.control(Control.UP)
@@ -47,7 +46,11 @@ if __name__ == '__main__':
     user.start()
 
     while game.is_running():
-        game.update()
+        fields = game.update()
+        renderer.clear()
+        for f in fields:
+            renderer.add(f)
+        renderer.draw()
         sleep(0.5)
 
     print("end of game!")
