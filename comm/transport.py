@@ -1,6 +1,6 @@
 from threading import Thread
 import socket
-from gateway import OutgoingGateway, IncomingGateway
+from .gateway import OutgoingGateway, IncomingGateway
 
 
 class TransportServer(OutgoingGateway):

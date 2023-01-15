@@ -6,34 +6,42 @@ from .renderer import Renderer
 from .user import User
 from .food import Food
 from .generator import Generator
+from .control import Control
 
 
-class Loop:
+class Game:
     def __init__(self):
-        self.snake = Snake(origin=Point(6, 6))
-        self.food = Food()
-
         self.width = 12
         self.height = 12
 
         self.renderer = Renderer(self.width, self.height)
+
+        self.snake = Snake(origin=Point(6, 6))
+        self.food = Food()
+
         self.grid = Grid(*self.renderer.get_canvas_dimensions())
         self.gen = Generator(self.food, self.grid.get_move_space())
 
-        self.up = lambda: self.snake.set_direction(Direction.SOUTH)
-        self.down = lambda: self.snake.set_direction(Direction.NORTH)
-        self.right = lambda: self.snake.set_direction(Direction.EAST)
-        self.left = lambda: self.snake.set_direction(Direction.WEST)
-
-        self.user = User(self.up, self.down, self.right, self.left)
-        self.user.start()
         self._is_running = True
+
+    def control(self, control: Control):
+        if control == Control.UP:
+            self.snake.set_direction(Direction.SOUTH)
+        elif control == Control.DOWN:
+            self.snake.set_direction(Direction.NORTH)
+        elif control == Control.RIGHT:
+            self.snake.set_direction(Direction.EAST)
+        elif control == Control.LEFT:
+            self.snake.set_direction(Direction.WEST)
 
     def stop(self):
         self._is_running = False
 
     def is_running(self):
         return self._is_running
+
+    def add_food(self, point):
+        self.food.add(point)
 
     def update(self):
         self.gen.random_add()

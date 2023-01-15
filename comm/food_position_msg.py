@@ -1,19 +1,18 @@
 from .msg import Msg
-
-from dataclasses import dataclass
 import json
 
 
-@dataclass
-class FoodPosition(Msg):
-    x: int
-    y: int
+class FoodPositionMsg(Msg):
+    def __init__(self, x=0, y=0):
+        self.x = x
+        self.y = y
 
     def serialize(self) -> str:
         tmp_dict = {"x": self.x, "y": self.y}
         return json.dumps(tmp_dict)
 
     def deserialize(self, buf) -> None:
+        print(buf)
         tmp_dict = json.loads(buf)
         self.x = tmp_dict["x"]
         self.y = tmp_dict["y"]
