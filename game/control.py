@@ -1,8 +1,8 @@
 from enum import Enum
 
 
-class Control(Enum):
-    UP = 0
-    DOWN = 1
-    RIGHT = 2
-    LEFT = 3
+class Control(int, Enum):
+    UP: int = 0
+    DOWN: int = 1
+    RIGHT: int = 2
+    LEFT: int = 3

@@ -19,6 +19,7 @@ class Game:
         self._is_running = True
 
     def control(self, control: Control):
+        print(type(control))
         if control == Control.UP:
             self.snake.set_direction(Direction.SOUTH)
         elif control == Control.DOWN:

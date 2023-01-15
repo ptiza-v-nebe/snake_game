@@ -1,11 +1,15 @@
 from .msg import Msg
 import json
+from game.point import Point
 
 
 class FoodPositionMsg(Msg):
     def __init__(self, x=0, y=0):
         self.x = x
         self.y = y
+
+    def get_position(self):
+        return Point(self.x, self.y)
 
     def serialize(self) -> str:
         tmp_dict = {"x": self.x, "y": self.y}

@@ -7,7 +7,6 @@ class TransportServer(Transport):
     def __init__(self):
         self.HEADER = 64
         self.PORT = 5050
-        #self.SERVER = socket.gethostbyname(socket.gethostname())
         self.SERVER = "127.0.0.1"
         self.ADDR = (self.SERVER, self.PORT)
         self.FORMAT = 'utf-8'
