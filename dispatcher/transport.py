@@ -1,4 +1,4 @@
-from comm.gateway import OutgoingGateway, IncomingGateway
+from dispatcher.gateway import OutgoingGateway, IncomingGateway
 
 
 class Transport(OutgoingGateway):

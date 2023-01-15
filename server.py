@@ -6,28 +6,27 @@ from device.renderer import Renderer
 from device.user import User
 from game.control import Control
 
-from comm.transport import Transport
+from device.transport_server import TransportServer
 
 
-class TestTransport(Transport):
-    def to_transport(self, data):
-        self.from_transport(data)
+# from comm.transport import Transport
+# class TestTransport(Transport):
+#     def to_transport(self, data):
+#         self.from_transport(data)
 
 
-from comm.food_position_msg import FoodPositionMsg
-from comm.dispatcher import Dispatcher
+from dispatcher.food_position_msg import FoodPositionMsg
+from dispatcher.dispatcher import Dispatcher
 
 
 if __name__ == '__main__':
-    transport = TestTransport()
-    dispatcher = Dispatcher(transport)
+    dispatcher = Dispatcher(TransportServer())
 
     dispatcher.subscribe(msg_type=FoodPositionMsg,
                          cb=lambda msg: print("in user callback: ", msg.x, msg.y),
                          topic="/food")
 
-    fp = FoodPositionMsg(3, 5)
-    dispatcher.publish(msg=fp, topic="/food")
+
 
     # # the game
     # renderer = Renderer(width=20, height=20)
@@ -51,4 +50,4 @@ if __name__ == '__main__':
     #     renderer.draw()
     #     sleep(0.5)
     #
-    # print("end of game!")
+    print("end of game!")
