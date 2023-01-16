@@ -20,13 +20,7 @@ class TransportClient(Transport):
         sleep(0.05)
         self.connect()
 
-    def send_message(self, data):
-        message = data.encode(self.FORMAT)
-        msg_length = len(message)
-        send_length = str(msg_length).encode(self.FORMAT)
-        send_length += b' ' * (self.HEADER - len(send_length))
-        self.sock.send(send_length)
-        self.sock.send(message)
+
 
     def connect(self):
         if self.conn_state == ConnectionState.DISCONNECTED:
@@ -44,9 +38,24 @@ class TransportClient(Transport):
         if self.conn_state == ConnectionState.CONNECTED:
             self.send_message(data)
 
-    def recv_thread_callback(self):
+    def send_message(self, data):
+        message = data.encode(self.FORMAT)
+        msg_length = len(message)
+        send_length = str(msg_length).encode(self.FORMAT)
+        send_length += b' ' * (self.HEADER - len(send_length))
+        self.sock.send(send_length)
+        self.sock.send(message)
+
+    def recv_message(self):
         msg_length, address = self.sock.recvfrom(self.HEADER)
+        msg_length = msg_length.decode(self.FORMAT)
         if msg_length:
             msg_length = int(msg_length)
             frame, address = self.sock.recvfrom(msg_length)
-            self.from_transport(frame)
+            frame = frame.decode(self.FORMAT)
+            return frame, address
+        return None
+
+    def recv_thread_callback(self):
+        frame, address = self.recv_message()
+        self.from_transport(frame)
