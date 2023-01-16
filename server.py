@@ -16,7 +16,7 @@ from game.game_state import GameState
 # should be called first
 if __name__ == '__main__':
     dispatcher = Dispatcher(TransportServer())
-    renderer = Renderer(width=20, height=20)
+    renderer = Renderer(width=12, height=12)
     game = Game(renderer.get_canvas_dimensions())
 
     # add food on the message arrived at /food topic
