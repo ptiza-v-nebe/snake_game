@@ -18,7 +18,7 @@ if __name__ == '__main__':
     generator = Generator()
 
     def grid_dim_callback(msg):
-        print("Got grid dimensions from server!")
+        print("[CLIENT] Got grid dimensions from server!")
         width, heigt = msg.get_size()
         generator.set_dim(width, heigt)
         dispatcher.publish(msg=StartGameMsg(), topic="/start")

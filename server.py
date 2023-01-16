@@ -11,16 +11,18 @@ from dispatcher.start_game_msg import StartGameMsg
 from dispatcher.dispatcher import Dispatcher
 from game.game_state import GameState
 
-import threading
-
 
 if __name__ == '__main__':
     dispatcher = Dispatcher(TransportServer())
     renderer = Renderer(width=20, height=20)
     game = Game(renderer.get_canvas_dimensions())
 
+    def food_position_callback(msg):
+        if game.get_state() == GameState.RUNNING:
+            game.add_food(msg.get_position())
+
     dispatcher.subscribe(msg_type=FoodPositionMsg,
-                         cb=lambda msg: game.add_food(msg.get_position()),
+                         cb=food_position_callback,
                          topic="/food")
 
     dispatcher.subscribe(msg_type=ControlMsg,
@@ -29,7 +31,7 @@ if __name__ == '__main__':
 
     dispatcher.subscribe(msg_type=StartGameMsg, cb=lambda msg: game.start(), topic="/start")
 
-    print("Waiting for client to start up!")
+    print("[SERVER] Waiting for client to start up!")
     while True:
         if game.get_state() == GameState.IDLE:
             grid_dim_msg = GridDimensionsMsg(*renderer.get_canvas_dimensions())
@@ -45,4 +47,5 @@ if __name__ == '__main__':
         elif game.get_state() == GameState.STOPPED:
             break
 
-    print("end of game!")
+    print()
+    print("[SERVER] End of game!")

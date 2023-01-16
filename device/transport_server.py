@@ -28,7 +28,6 @@ class TransportServer(Transport):
         self.sock.sendto(message, client_addr)
 
     def to_transport(self, data):
-        print(self.client_addr, data, "data to transport server")
         if self.conn_state == ConnectionState.CONNECTED and self.client_addr != 0:
             self.send_message(data, self.client_addr)
 
@@ -42,7 +41,7 @@ class TransportServer(Transport):
                     msg_length = int(msg_length)
                     frame, address = self.sock.recvfrom(msg_length)
                     if frame == b'!CONNECT':
-                        print("client connected", frame, address)
+                        print("[SERVER] Client connected!", frame, address)
                         self.conn_state = ConnectionState.CONNECTED
                         self.client_addr = address
 
@@ -52,8 +51,7 @@ class TransportServer(Transport):
                     msg_length = int(msg_length)
                     frame, address = self.sock.recvfrom(msg_length)
                     if frame == b'!DISCONNECT':
-                        print("client disconnected", frame, address)
+                        print("[SERVER] Client disconnected!", frame, address)
                         self.conn_state = ConnectionState.DISCONNECTED
                         continue
-                    print("frame recv in server", frame)
                     self.from_transport(frame)
