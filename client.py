@@ -13,6 +13,7 @@ from game.generator import Generator
 import threading
 
 if __name__ == '__main__':
+    print("[CLIENT] Starting client")
     transport = TransportClient(ip="127.0.0.1")
     dispatcher = Dispatcher(transport)
     generator = Generator()
@@ -39,6 +40,8 @@ if __name__ == '__main__':
 
     user.set_callbacks(up, down, right, left)
     user.start()
+    print("[CLIENT] Use following key for controlling the snake:")
+    print("         W for UP, S for DOWN, A for LEFT, D for RIGHT movements")
 
     while True:
         pass
