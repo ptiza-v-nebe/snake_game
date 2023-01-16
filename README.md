@@ -14,6 +14,7 @@ Simple snake game using some DDD and Clean Architecture methods
 # Following features implemented
 - collision checking with walls
 - collision checking of the snake against itself
+- snake cannot rotate 180 degrees
 - update rate 0.5 s
 - a user can control the snake over udp with w, a, s ,d keys
 - each 5 s client sends to server random valid food position
