@@ -3,6 +3,7 @@ import json
 from game.point import Point
 
 
+# message that represents position of the food object
 class FoodPositionMsg(Msg):
     def __init__(self, x=0, y=0):
         self.x = x

@@ -3,6 +3,7 @@ from game.control import Control
 import json
 
 
+# message that represents user controlling of the snake
 class ControlMsg(Msg):
     def __init__(self, control=Control.UP):
         self.control: Control = control

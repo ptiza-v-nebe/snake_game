@@ -2,6 +2,7 @@ from .msg import Msg
 import json
 
 
+# message that represents start of the game
 class StartGameMsg(Msg):
     def __init__(self):
         pass

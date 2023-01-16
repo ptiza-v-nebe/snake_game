@@ -2,6 +2,7 @@ from .msg import Msg
 import json
 
 
+# message that represents grid dimensions
 class GridDimensionsMsg(Msg):
     def __init__(self, width=0, height=0):
         self.width = width
