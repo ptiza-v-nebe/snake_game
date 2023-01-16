@@ -4,6 +4,8 @@ from dispatcher.transport import Transport
 from .connection_state import ConnectionState
 
 
+# TransportServer represent the general UDP server part of the application
+# it should be started first (then TransportClient)
 class TransportServer(Transport):
     def __init__(self):
         self.HEADER = 64
@@ -20,10 +22,14 @@ class TransportServer(Transport):
         thread = Thread(target=self.recv_thread_callback)
         thread.start()
 
+    # this method is kind of write function and is the interface to the application
+    # if the application want to send something to clients
     def to_transport(self, data):
         if self.conn_state == ConnectionState.CONNECTED and self.client_addr != 0:
             self.send_message(data, self.client_addr)
 
+    # sending one message with following protocol
+    # [MSG_LEN][PAYLOAD]
     def send_message(self, data, client_addr):
         message = data.encode(self.FORMAT)
         msg_length = len(message)
@@ -32,6 +38,8 @@ class TransportServer(Transport):
         self.sock.sendto(send_length, client_addr)
         self.sock.sendto(message, client_addr)
 
+    # receiving one message with following protocol
+    # [MSG_LEN][PAYLOAD]
     def recv_message(self):
         msg_length, address = self.sock.recvfrom(self.HEADER)
         msg_length = msg_length.decode(self.FORMAT)
@@ -42,6 +50,9 @@ class TransportServer(Transport):
             return frame, address
         return None, None
 
+    # thread for handling the communication process
+    # clients should send a !CONNECT as [PAYLOAD] before anything else
+    # or a !DISCONNECT to close the connection
     def recv_thread_callback(self):
         is_running = True
 
