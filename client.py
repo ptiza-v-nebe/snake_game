@@ -49,7 +49,7 @@ if __name__ == '__main__':
 
     user.set_callbacks(up, down, right, left)
     user.start()
-    print("[CLIENT] Use following key for controlling the snake:")
+    print("[CLIENT] Use following keys for controlling the snake:")
     print("[CLIENT] W for UP, S for DOWN, A for LEFT, D for RIGHT movements")
     print("[CLIENT] Exit with ctrl-c!")
 
