@@ -20,8 +20,6 @@ class TransportClient(Transport):
         sleep(0.05)
         self.connect()
 
-
-
     def connect(self):
         if self.conn_state == ConnectionState.DISCONNECTED:
             self.conn_state = ConnectionState.CONNECTED

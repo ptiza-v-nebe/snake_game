@@ -12,14 +12,13 @@ class TransportServer(Transport):
         self.ADDR = (self.SERVER, self.PORT)
         self.FORMAT = 'utf-8'
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        # self.sock.settimeout(2)
         self.sock.bind(self.ADDR)
         self.conn_state = ConnectionState.DISCONNECTED
         self.client_addr = 0
 
         thread = Thread(target=self.recv_thread_callback)
         thread.start()
-
-
 
     def to_transport(self, data):
         if self.conn_state == ConnectionState.CONNECTED and self.client_addr != 0:

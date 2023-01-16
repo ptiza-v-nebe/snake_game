@@ -15,7 +15,8 @@ class User:
         self.left_callback = left_callback
 
     def on_press(self, key):
-        if key == keyboard.Key.up and self.up_callback != 0:
+        #if key == keyboard.Key.up and self.up_callback != 0:
+        if key == keyboard.KeyCode("w") and self.up_callback != 0:
             self.up_callback()
 
         elif key == keyboard.Key.down and self.down_callback != 0:

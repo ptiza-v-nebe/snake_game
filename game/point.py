@@ -1,6 +1,7 @@
 from dataclasses import dataclass
 
 
+# general 2D point class
 @dataclass()
 class Point:
     x: int
