@@ -4,7 +4,7 @@ Simple snake game using some DDD and Clean Architecture methods
 # Dependencies
 `pip3 install pynput`
 
-#Usage
+# Usage
 1. Open two terminals and place them side by side
 2. start server in one terminal:
    `python3 server.py`
