@@ -1,26 +1,17 @@
-
 from game.game import Game
 from time import sleep
 
 from device.renderer import Renderer
-from device.user import User
-from game.control import Control
-
 from device.transport_server import TransportServer
-
 from dispatcher.food_position_msg import FoodPositionMsg
+from dispatcher.grid_dim_msg import GridDimensionsMsg
 from dispatcher.control_msg import ControlMsg
+from dispatcher.start_game_msg import StartGameMsg
 
 from dispatcher.dispatcher import Dispatcher
+from game.game_state import GameState
 
-
-# from comm.transport import Transport
-# class TestTransport(Transport):
-#     def to_transport(self, data):
-#         self.from_transport(data)
-
-
-
+import threading
 
 
 if __name__ == '__main__':
@@ -36,12 +27,22 @@ if __name__ == '__main__':
                          cb=lambda msg: game.control(msg.get_control()),
                          topic="/control")
 
-    while game.is_running():
-        game.update()
-        renderer.clear()
-        for fields in game.render():
-            renderer.add(fields)
-        renderer.draw()
-        sleep(0.5)
+    dispatcher.subscribe(msg_type=StartGameMsg, cb=lambda msg: game.start(), topic="/start")
+
+    print("Waiting for client to start up!")
+    while True:
+        if game.get_state() == GameState.IDLE:
+            grid_dim_msg = GridDimensionsMsg(*renderer.get_canvas_dimensions())
+            dispatcher.publish(msg=grid_dim_msg, topic="/grid_dim")
+            sleep(1)
+        elif game.get_state() == GameState.RUNNING:
+            game.update()
+            renderer.clear()
+            for fields in game.render():
+                renderer.add(fields)
+            renderer.draw()
+            sleep(0.5)
+        elif game.get_state() == GameState.STOPPED:
+            break
 
     print("end of game!")

@@ -4,22 +4,29 @@ from game.control import Control
 from device.transport_client import TransportClient
 from dispatcher.food_position_msg import FoodPositionMsg
 from dispatcher.control_msg import ControlMsg
+from dispatcher.grid_dim_msg import GridDimensionsMsg
+from dispatcher.start_game_msg import StartGameMsg
+
 from dispatcher.dispatcher import Dispatcher
+from game.generator import Generator
 
-import time, threading
-
-
-
+import threading
 
 if __name__ == '__main__':
     transport = TransportClient(ip="127.0.0.1")
     dispatcher = Dispatcher(transport)
+    generator = Generator()
 
-
-
+    def grid_dim_callback(msg):
+        print("Got grid dimensions from server!")
+        width, heigt = msg.get_size()
+        generator.set_dim(width, heigt)
+        dispatcher.publish(msg=StartGameMsg(), topic="/start")
+    dispatcher.subscribe(msg_type=GridDimensionsMsg, cb=grid_dim_callback, topic="/grid_dim")
 
     def timer_callback():
-        fp_msg = FoodPositionMsg(3, 5)
+        point = generator.get_random_position()
+        fp_msg = FoodPositionMsg(point.x, point.y)
         dispatcher.publish(msg=fp_msg, topic="/food")
         threading.Timer(5, timer_callback).start()
     timer_callback()

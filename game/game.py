@@ -6,6 +6,7 @@ from .direction import Direction
 from .food import Food
 from .generator import Generator
 from .control import Control
+from .game_state import GameState
 
 
 class Game:
@@ -14,12 +15,12 @@ class Game:
         self.food = Food()
 
         self.grid = Grid(*dimensions)
-        self.gen = Generator(self.food, self.grid.get_move_space())
+        #self.gen = Generator(self.food, self.grid.get_move_space())
 
         self._is_running = True
+        self.state = GameState.IDLE
 
     def control(self, control: Control):
-        print(type(control))
         if control == Control.UP:
             self.snake.set_direction(Direction.SOUTH)
         elif control == Control.DOWN:
@@ -30,16 +31,19 @@ class Game:
             self.snake.set_direction(Direction.WEST)
 
     def stop(self):
-        self._is_running = False
+        self.state = GameState.STOPPED
 
-    def is_running(self):
-        return self._is_running
+    def start(self):
+        self.state = GameState.RUNNING
+
+    def get_state(self):
+        return self.state
 
     def add_food(self, point):
         self.food.add(point)
 
     def update(self):
-        self.gen.random_add()
+        # self.gen.random_add()
 
         # check for upcoming collision
         phantom_head = self.snake.get_phantom_head()

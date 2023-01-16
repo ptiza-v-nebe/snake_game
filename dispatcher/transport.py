@@ -8,7 +8,7 @@ class Transport(OutgoingGateway):
     def set_incoming_gateway(self, incoming_gateway):
         self.incoming_gateway: IncomingGateway = incoming_gateway
 
-    def from_transport(self,data):
+    def from_transport(self, data):
         if self.incoming_gateway != 0:
             self.incoming_gateway.from_transport(data)
 

@@ -1,6 +1,7 @@
 from threading import Thread
 import socket
 from dispatcher.transport import Transport
+from .connection_state import ConnectionState
 
 
 class TransportServer(Transport):
@@ -10,23 +11,49 @@ class TransportServer(Transport):
         self.SERVER = "127.0.0.1"
         self.ADDR = (self.SERVER, self.PORT)
         self.FORMAT = 'utf-8'
-        self.DISCONNECT_MESSAGE = "!DISCONNECT"
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind(self.ADDR)
+        self.conn_state = ConnectionState.DISCONNECTED
+        self.client_addr = 0
 
         thread = Thread(target=self.recv_thread_callback)
         thread.start()
 
+    def send_message(self, data, client_addr):
+        message = data.encode(self.FORMAT)
+        msg_length = len(message)
+        send_length = str(msg_length).encode(self.FORMAT)
+        send_length += b' ' * (self.HEADER - len(send_length))
+        self.sock.sendto(send_length, client_addr)
+        self.sock.sendto(message, client_addr)
+
     def to_transport(self, data):
-        pass
+        print(self.client_addr, data, "data to transport server")
+        if self.conn_state == ConnectionState.CONNECTED and self.client_addr != 0:
+            self.send_message(data, self.client_addr)
 
     def recv_thread_callback(self):
-        connected = True
-        while connected:
-            msg_length, address = self.sock.recvfrom(self.HEADER)
-            if msg_length:
-                msg_length = int(msg_length)
-                msg_frame, address = self.sock.recvfrom(msg_length)
-                self.from_transport(msg_frame)
-                if msg_frame == self.DISCONNECT_MESSAGE:
-                    connected = False
+        is_running = True
+
+        while is_running:
+            if self.conn_state == ConnectionState.DISCONNECTED:
+                msg_length, address = self.sock.recvfrom(self.HEADER)
+                if msg_length:
+                    msg_length = int(msg_length)
+                    frame, address = self.sock.recvfrom(msg_length)
+                    if frame == b'!CONNECT':
+                        print("client connected", frame, address)
+                        self.conn_state = ConnectionState.CONNECTED
+                        self.client_addr = address
+
+            elif self.conn_state == ConnectionState.CONNECTED:
+                msg_length, address = self.sock.recvfrom(self.HEADER)
+                if msg_length:
+                    msg_length = int(msg_length)
+                    frame, address = self.sock.recvfrom(msg_length)
+                    if frame == b'!DISCONNECT':
+                        print("client disconnected", frame, address)
+                        self.conn_state = ConnectionState.DISCONNECTED
+                        continue
+                    print("frame recv in server", frame)
+                    self.from_transport(frame)
